@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Font Info</title>
+  <link rel="stylesheet" type="text/css" href="popup.css">
+</head>
+<body>
+  <button class="toggle">
+    <div class="toggle-label toggle-label-off">OFF</div>
+    <div class="toggle-switch"></div>
+    <div class="toggle-label toggle-label-on">ON</div>
+  </button>
+  
+  <div class="info-radio-buttons">
+    <fieldset class="checkbox-group">
+      <legend class="checkbox-group-legend">Choose Which Info do You Want!</legend>
+      <div class="checkbox">
+          <label class="checkbox-wrapper" for="fontInfo">
+              <input type="radio" 
+                     value="item1"
+                     class="checkbox-input" id="fontInfo" name="infoType" />
+              <span class="checkbox-tile">
+                  <span class="checkbox-icon">
+                      <img src="https://cdn-icons-png.flaticon.com/512/167/167502.png" alt="icon" style="height: 50px; width: 50px; " />
+                  </span>
+                  <span class="checkbox-label">Font Info</span>
+              </span>
+          </label>
+      </div>
+      <div class="checkbox">
+          <label class="checkbox-wrapper" for="dimension">
+              <input type="radio" class="checkbox-input" value="item2" id="dimension" name="infoType" />
+              <span class="checkbox-tile">
+                  <span class="checkbox-icon">
+                      <img src="https://cdn-icons-png.flaticon.com/512/76/76749.png" alt="icon" style="height: 50px; width: 50px; opacity: 85%;"/>
+                  </span>
+                  <span class="checkbox-label">Dimension</span>
+              </span>
+          </label>
+      </div>
+  </fieldset>
+  
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
