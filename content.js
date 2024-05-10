@@ -1,4 +1,5 @@
 let isEnabled = false; // Initialize isEnabled to false by default
+let checkedItem = "getFontInfo"
 
 // Function to remove all tooltips from inactive (not hovered) elements
 function removeTooltips() {
@@ -38,14 +39,22 @@ function showTooltip(target, text, x, y) {
 function handleMouseover(event) {
     if (isEnabled) {
         const target = event.target;
-
         // Retrieve computed font size, line height, and font weight
         const fontSize = getComputedStyleValue(target, "font-size");
         const lineHeight = getComputedStyleValue(target, "line-height");
         const fontWeight = getComputedStyleValue(target, "font-weight");
-
+        const itemWidth = getComputedStyleValue(target, "width");
+        const itemHeight = getComputedStyleValue(target, "height");
         // Construct tooltip text
-        const tooltipText = `Font Size: ${fontSize}, Line Height: ${lineHeight}, Font Weight: ${fontWeight}`;
+
+        let tooltipText;
+        if(checkedItem == "getDimension"){
+
+             tooltipText = `Width: ${itemWidth}, Height: ${itemHeight}`;
+        }else{
+             tooltipText = `Font Size: ${fontSize}, Line Height: ${lineHeight}, Font Weight: ${fontWeight}`;
+
+        }
 
         // Get the position of the target element
         const rect = target.getBoundingClientRect();
@@ -81,9 +90,9 @@ function removeListeners() {
 }
 
 // Function to update the extension's state
-function updateState(newState) {
-    isEnabled = newState;
-    console.log("Received message to update state:", isEnabled);
+function updateState(updatedIsEnabled, updatedCheckedItem) {
+    isEnabled = updatedIsEnabled;
+    checkedItem = updatedCheckedItem
 
     if (isEnabled) {
         addListeners(); // Add event listeners if extension is enabled
@@ -94,13 +103,12 @@ function updateState(newState) {
 }
 
 // Get initial state from local storage upon initialization
-chrome.storage.local.get(["isEnabled"], (result) => {
-    console.log("content.js local storage", result.isEnabled)
-    updateState(result.isEnabled);
+chrome.storage.local.get(["isEnabled", "checkedItem"], (result) => {
+    updateState(result.isEnabled, result.checkedItem);
 });
 // Listen for messages from the background script to update the state
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'updateState') {
-        updateState(message.isEnabled);
+        updateState(message.isEnabled, message.checkedItem);
     }
 });

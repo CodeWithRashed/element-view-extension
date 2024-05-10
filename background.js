@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Send message to content scripts in active tabs
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
-                chrome.tabs.sendMessage(tabs[0].id, { action: 'updateState', isEnabled: message.isEnabled }, (response) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'updateState', isEnabled: message.isEnabled, isEnabled: message.checkedItem }, (response) => {
                     if (chrome.runtime.lastError) {
                         console.log("Error sending message to content script:", chrome.runtime.lastError.message);
                     } else {
