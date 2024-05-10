@@ -28,14 +28,14 @@ function updateUI(isEnabled, checkedItem) {
     console.log("Unexpected checkedItem value:", checkedItem);
   }
 
-  console.log(isEnabled, checkedItem)
+  console.log(isEnabled, checkedItem);
 }
 
 // LOAD THE INITIAL STATE AND UPDATE UI
 chrome.storage.local.get(["isEnabled", "checkedItem"], (result) => {
   isEnabled = result.isEnabled || false;
   checkedItem = result.checkedItem;
-  console.log(checkedItem, "checkedItem on popup")
+  console.log(checkedItem, "checkedItem on popup");
   updateUI(isEnabled, checkedItem);
 });
 
@@ -44,24 +44,20 @@ toggleButton.addEventListener("click", () => {
   isEnabled = !isEnabled;
 
   // Send message to background script to update state
-  chrome.runtime.sendMessage(
-    { action: "updateState", isEnabled, checkedItem },
-    (response) => {
-      if (chrome.runtime.lastError) {
-        console.log(
-          "Error sending message to background script:",
-          chrome.runtime.lastError.message
-        );
-      } else {
-        console.log("Message sent to background script successfully.");
-      }
-    }
-  );
-
-  // Update local storage
-  chrome.storage.local.set({ isEnabled: isEnabled }).then(() => {
-    console.log("Status saved to local storage.", isEnabled);
+  chrome.storage.local.set({ isEnabled }).then(() => {
     updateUI(isEnabled, checkedItem);
+    // Send message directly to content script in active tab
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          action: "updateState",
+          isEnabled,
+          checkedItem,
+        });
+      } else {
+        console.log("No active tabs with content scripts running.");
+      }
+    });
   });
 });
 
@@ -83,6 +79,18 @@ checkboxGroups.forEach(function (checkboxGroup) {
           .set({ checkedItem: selectedRadioButton.value || "getFontInfo" })
           .then(() => {
             updateUI(isEnabled, checkedItem);
+            // Send message directly to content script in active tab
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+              if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                  action: "updateState",
+                  isEnabled,
+                  checkedItem,
+                });
+              } else {
+                console.warn("No active tabs with content scripts running.");
+              }
+            });
           });
         console.log("Selected radio button value:", selectedRadioButton.value);
       } else {

@@ -109,6 +109,14 @@ chrome.storage.local.get(["isEnabled", "checkedItem"], (result) => {
 // Listen for messages from the background script to update the state
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === 'updateState') {
-        updateState(message.isEnabled, message.checkedItem);
+      isEnabled = message.isEnabled;
+      checkedItem = message.checkedItem;
+  
+      if (isEnabled) {
+        addListeners();
+      } else {
+        removeListeners();
+        removeTooltips();
+      }
     }
-});
+  });
