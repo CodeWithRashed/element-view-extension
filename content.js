@@ -43,16 +43,22 @@ function handleMouseover(event) {
         const fontSize = getComputedStyleValue(target, "font-size");
         const lineHeight = getComputedStyleValue(target, "line-height");
         const fontWeight = getComputedStyleValue(target, "font-weight");
+        const fontColor = getComputedStyleValue(target, "color")
+        const fontFamily = getComputedStyleValue(target, "font-family")
+
+        // FOR DIMENSION 
         const itemWidth = getComputedStyleValue(target, "width");
         const itemHeight = getComputedStyleValue(target, "height");
+        const itemMargin = getComputedStyleValue(target, "margin")
+        const itemPadding = getComputedStyleValue(target, "padding")
         // Construct tooltip text
 
         let tooltipText;
         if(checkedItem == "getDimension"){
 
-             tooltipText = `Width: ${itemWidth}, Height: ${itemHeight}`;
+             tooltipText = `Width: ${itemWidth} || Height: ${itemHeight} || Margin: ${itemMargin} || Padding: ${itemPadding}`;
         }else{
-             tooltipText = `Font Size: ${fontSize}, Line Height: ${lineHeight}, Font Weight: ${fontWeight}`;
+             tooltipText = `Font Size: ${fontSize} || Line Height: ${lineHeight} || Font Weight: ${fontWeight} || Color: ${fontColor} || Font Family: ${fontFamily}`;
 
         }
 
