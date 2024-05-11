@@ -21,7 +21,7 @@ function showTooltip(target, text, x, y) {
     tooltip.style.background = "#333";
     tooltip.style.color = "#fff";
     tooltip.style.padding = "5px";
-    tooltip.style.zIndex = "9999";
+    tooltip.style.zIndex = "999999";
     tooltip.textContent = text;
     tooltip.style.left = x + "px";
     tooltip.style.top = y + "px";
